@@ -5,9 +5,7 @@ import 'views/home/home_screen.dart';
 void main() {
   runApp(
     // Riverpodを有効にするために必須の囲み
-    const ProviderScope(
-      child: MyApp(),
-    ),
+    const ProviderScope(child: MyApp()),
   );
 }
 
@@ -18,10 +16,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Diet Poison App',
-      theme: ThemeData(
-        primarySwatch: Colors.amber,
-        useMaterial3: true,
-      ),
+      theme: ThemeData(primarySwatch: Colors.amber, useMaterial3: true),
       home: const HomeScreen(),
     );
   }
