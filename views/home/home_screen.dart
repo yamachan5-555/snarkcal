@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../providers/diet_provider.dart';
+import 'add_diet_dialog.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
@@ -67,6 +68,16 @@ class HomeScreen extends ConsumerWidget {
             ),
           ],
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          showDialog(
+            context: context,
+            builder: (context) => const AddDietDialog(),
+          );
+        },
+        backgroundColor: Colors.amber,
+        child: const Icon(Icons.add),
       ),
     );
   }
