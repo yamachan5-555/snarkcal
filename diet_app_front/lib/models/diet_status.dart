@@ -16,5 +16,17 @@ class DietStatus {
     required this.targetCarbo,
     required this.characterMessage,
   });
+
+  // JsonマップからDietStatusオブジェクトを生成する
+  factory DietStatus.fromJson(Map<String, dynamic> json) {
+    return DietStatus(
+      totalProtein: json['totalProtein'] as int,
+      totalFat: json['totalFat'] as int,
+      totalCarbo: json['totalCarbo'] as int,
+      targetProtein: json['targetProtein'] as int,
+      targetFat: json['targetFat'] as int,
+      targetCarbo: json['targetCarbo'] as int,
+      characterMessage: json['characterMessage'] as String,
+    );
+  }
 }
-test

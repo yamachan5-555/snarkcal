@@ -4,12 +4,25 @@ import '../../providers/diet_provider.dart';
 import '../target/target_setting_screen.dart';
 import 'add_diet_dialog.dart';
 
-class HomeScreen extends ConsumerWidget {
+class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    // プロバイダーからモックデータを取得
+  ConsumerState<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends ConsumerState<HomeScreen> {
+  @override
+  void initState() {
+    super.initState();
+    // 画面構築後にJava APIからデータを取得する
+    Future.microtask(() {
+      ref.read(dietStatusProvider.notifier).fetchDietStatus();
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final dietStatus = ref.watch(dietStatusProvider);
 
     return Scaffold(

@@ -1,4 +1,6 @@
+import 'dart:convert';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:http/http.dart' as http;
 import '../models/diet_status.dart';
 
 // 状態を管理する・更新するNotifierクラス
@@ -7,14 +9,48 @@ class DietNotifier extends Notifier<DietStatus> {
   DietStatus build() {
     // 初期状態のデータ（モック）
     return DietStatus(
-      totalProtein: 45,
-      totalFat: 85,
-      totalCarbo: 120,
+      totalProtein: 0,
+      totalFat: 0,
+      totalCarbo: 0,
       targetProtein: 100,
       targetFat: 45,
       targetCarbo: 200,
-      characterMessage: "おいおい、脂質が目標の2倍近くになってるぞ。油のプールにでも飛び込んだのか？明日の体重計が楽しみだな！",
+      characterMessage: "データを読み込み中...",
     );
+  }
+
+  Future<void> fetchDietStatus() async {
+    final url = Uri.parse('http://localhost:8080/api/v1/diet-status');
+    try {
+      final response = await http.get(url);
+      if (response.statusCode == 200) {
+        // 文字化け防止のため utf8.decode を使用
+        final Map<String, dynamic> data = json.decode(
+          utf8.decode(response.bodyBytes),
+        );
+        state = DietStatus.fromJson(data);
+      } else {
+        state = DietStatus(
+          totalProtein: state.totalProtein,
+          totalFat: state.totalFat,
+          totalCarbo: state.totalCarbo,
+          targetProtein: state.targetProtein,
+          targetFat: state.targetFat,
+          targetCarbo: state.targetCarbo,
+          characterMessage: "エラー: APIからデータを取得できませんでした (${response.statusCode})",
+        );
+      }
+    } catch (e) {
+      state = DietStatus(
+        totalProtein: state.totalProtein,
+        totalFat: state.totalFat,
+        totalCarbo: state.totalCarbo,
+        targetProtein: state.targetProtein,
+        targetFat: state.targetFat,
+        targetCarbo: state.targetCarbo,
+        characterMessage: "通信エラー: Javaサーバーが起動しているか確認してください",
+      );
+    }
   }
 
   // 食事（PFC）を追加するメソッド
