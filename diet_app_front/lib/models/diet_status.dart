@@ -17,3 +17,4 @@ class DietStatus {
     required this.characterMessage,
   });
 }
+test

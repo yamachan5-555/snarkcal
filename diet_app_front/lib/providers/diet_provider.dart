@@ -23,22 +23,51 @@ class DietNotifier extends Notifier<DietStatus> {
     final newFat = state.totalFat + fat;
     final newCarbo = state.totalCarbo + carbo;
 
+    _updateStateAndMessage(
+      newProtein,
+      newFat,
+      newCarbo,
+      state.targetProtein,
+      state.targetFat,
+      state.targetCarbo,
+    );
+  }
+
+  void updateTargets(int targetP, int targetF, int targetC) {
+    _updateStateAndMessage(
+      state.totalProtein,
+      state.totalFat,
+      state.totalCarbo,
+      targetP,
+      targetF,
+      targetC,
+    );
+  }
+
+  void _updateStateAndMessage(
+    int p,
+    int f,
+    int c,
+    int targetP,
+    int targetF,
+    int targetC,
+  ) {
     // 状態に応じて毒舌メッセージを動的に変化させる
     String newMessage = "よしよし、順調に栄養を補給したな。";
-    if (newFat > state.targetFat * 1.5) {
+    if (f > targetF * 1.5) {
       newMessage = "ギブアップ！これ以上脂質を増やすなら、揚げ物の衣にでも包まって出直してこい！";
-    } else if (newProtein < state.targetProtein) {
+    } else if (p < targetP) {
       newMessage = "タンパク質がまだまだ足りないぞ！筋肉が泣いているのが聞こえないのか？";
     }
 
     //新しい状態に更新
     state = DietStatus(
-      totalProtein: newProtein,
-      totalFat: newFat,
-      totalCarbo: newCarbo,
-      targetProtein: state.targetProtein,
-      targetFat: state.targetFat,
-      targetCarbo: state.targetCarbo,
+      totalProtein: p,
+      totalFat: f,
+      totalCarbo: c,
+      targetProtein: targetP,
+      targetFat: targetF,
+      targetCarbo: targetC,
       characterMessage: newMessage,
     );
   }

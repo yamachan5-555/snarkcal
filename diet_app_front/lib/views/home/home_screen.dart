@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../providers/diet_provider.dart';
+import '../target/target_setting_screen.dart';
 import 'add_diet_dialog.dart';
 
 class HomeScreen extends ConsumerWidget {
@@ -15,6 +16,18 @@ class HomeScreen extends ConsumerWidget {
       appBar: AppBar(
         title: const Text('マッスル＆ドクゼツ'),
         backgroundColor: Colors.amber,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.settings),
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => const TargetSettingScreen(),
+                ),
+              );
+            },
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
