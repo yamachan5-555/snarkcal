@@ -1,16 +1,20 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
-import '../../models/food_item.dart';
 
-class FoodSearchScreen extends StatefulWidget {
+import '../../models/food_item.dart';
+import '../../models/diet_status.dart';
+import '../../providers/diet_provider.dart';
+
+class FoodSearchScreen extends ConsumerStatefulWidget {
   const FoodSearchScreen({super.key});
 
   @override
-  State<FoodSearchScreen> createState() => _FoodSearchScreenState();
+  ConsumerState<FoodSearchScreen> createState() => _FoodSearchScreenState();
 }
 
-class _FoodSearchScreenState extends State<FoodSearchScreen> {
+class _FoodSearchScreenState extends ConsumerState<FoodSearchScreen> {
   final TextEditingController _searchController = TextEditingController();
   List<FoodItem> _searchResults = [];
   bool _isLoading = false;
@@ -183,8 +187,20 @@ void _showAmountDialog(BuildContext context, FoodItem food) {
                 if (!context.mounted) return;
 
                 if (response.statusCode == 200) {
-                  Navigator.pop(dialogContext); // ダイアログ閉じる
-                  Navigator.pop(context); // 検索画面閉じてホームへ戻る
+                  final Map<String, dynamic> responseData = json.decode(
+                    utf8.decode(response.bodyBytes),
+                  );
+                  final updatedStatus = DietStatus.fromJson(responseData);
+
+                  ref
+                      .read(dietStatusProvider.notifier)
+                      .updateStatus(updatedStatus);
+
+                  // ダイアログ閉じる
+                  Navigator.pop(dialogContext);
+
+                  // 検索画面閉じつつ、呼び出し元にtrueを返す
+                  Navigator.pop(context, true);
 
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
@@ -193,6 +209,8 @@ void _showAmountDialog(BuildContext context, FoodItem food) {
                   );
                 }
               } catch (e) {
+                if (!context.mounted) return;
+
                 ScaffoldMessenger.of(
                   context,
                 ).showSnackBar(SnackBar(content: Text('登録エラー: $e')));

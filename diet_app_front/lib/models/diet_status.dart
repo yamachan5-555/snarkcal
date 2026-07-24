@@ -20,13 +20,13 @@ class DietStatus {
   // JsonマップからDietStatusオブジェクトを生成する
   factory DietStatus.fromJson(Map<String, dynamic> json) {
     return DietStatus(
-      totalProtein: json['totalProtein'] as int,
-      totalFat: json['totalFat'] as int,
-      totalCarbo: json['totalCarbo'] as int,
-      targetProtein: json['targetProtein'] as int,
-      targetFat: json['targetFat'] as int,
-      targetCarbo: json['targetCarbo'] as int,
-      characterMessage: json['characterMessage'] as String,
+      totalProtein: json['totalProtein'] as int? ?? 0,
+      totalFat: json['totalFat'] as int? ?? 0,
+      totalCarbo: json['totalCarbo'] as int? ?? 0,
+      targetProtein: json['targetProtein'] as int? ?? 0,
+      targetFat: json['targetFat'] as int? ?? 0,
+      targetCarbo: json['targetCarbo'] as int? ?? 0,
+      characterMessage: json['characterMessage'] as String? ?? '',
     );
   }
 }

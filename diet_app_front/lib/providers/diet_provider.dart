@@ -107,6 +107,10 @@ class DietNotifier extends Notifier<DietStatus> {
       characterMessage: newMessage,
     );
   }
+
+  void updateStatus(DietStatus newStatus) {
+    state = newStatus;
+  }
 }
 
 // プロバイダーの定義（NotifierProviderを使用）

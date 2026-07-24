@@ -19,13 +19,13 @@ class FoodItem {
 
   factory FoodItem.fromJson(Map<String, dynamic> json) {
     return FoodItem(
-      id: json['id'] as int,
-      name: json['name'] as String,
-      calories: json['calories'] as int,
-      protein: (json['protein'] as num).toDouble(),
-      fat: (json['fat'] as num).toDouble(),
-      carbo: (json['carbo'] as num).toDouble(),
-      salt: (json['salt'] as num).toDouble(),
+      id: json['id'] as int? ?? 0,
+      name: json['name'] as String? ?? '',
+      calories: json['calories'] as int? ?? 0,
+      protein: (json['protein'] as num?)?.toDouble() ?? 0.0,
+      fat: (json['fat'] as num?)?.toDouble() ?? 0.0,
+      carbo: (json['carbo'] as num?)?.toDouble() ?? 0.0,
+      salt: (json['salt'] as num?)?.toDouble() ?? 0.0,
     );
   }
 }
