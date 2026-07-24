@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import '../../providers/diet_provider.dart';
+import '../food/food_search_screen.dart';
 import '../target/target_setting_screen.dart';
 import 'add_diet_dialog.dart';
 
@@ -95,15 +97,44 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          showDialog(
-            context: context,
-            builder: (context) => const AddDietDialog(),
-          );
-        },
+      // 右下の「+」ボタンを押すと展開するSpeed Dialメニュー
+      floatingActionButton: SpeedDial(
+        icon: Icons.add,
+        activeIcon: Icons.close,
         backgroundColor: Colors.amber,
-        child: const Icon(Icons.add),
+        foregroundColor: Colors.black,
+        spacing: 12,
+        spaceBetweenChildren: 8,
+        children: [
+          // ① 検索アイコンボタン
+          SpeedDialChild(
+            child: const Icon(Icons.search),
+            backgroundColor: Colors.amber.shade200,
+            label: '検索して記録',
+            labelStyle: const TextStyle(fontWeight: FontWeight.bold),
+            onTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => const FoodSearchScreen(),
+                ),
+              );
+            },
+          ),
+
+          // ② 手入力で食事記録ボタン
+          SpeedDialChild(
+            child: const Icon(Icons.edit),
+            backgroundColor: Colors.lightGreen.shade200,
+            label: '手入力で記録',
+            labelStyle: const TextStyle(fontWeight: FontWeight.bold),
+            onTap: () {
+              showDialog(
+                context: context,
+                builder: (context) => const AddDietDialog(),
+              );
+            },
+          ),
+        ],
       ),
     );
   }
