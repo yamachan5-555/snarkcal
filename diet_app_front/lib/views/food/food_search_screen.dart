@@ -180,6 +180,8 @@ void _showAmountDialog(BuildContext context, FoodItem food) {
                   body: json.encode({'protein': p, 'fat': f, 'carbo': c}),
                 );
 
+                if (!context.mounted) return;
+
                 if (response.statusCode == 200) {
                   Navigator.pop(dialogContext); // ダイアログ閉じる
                   Navigator.pop(context); // 検索画面閉じてホームへ戻る
