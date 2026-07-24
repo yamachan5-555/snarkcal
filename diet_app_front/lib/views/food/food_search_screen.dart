@@ -113,7 +113,7 @@ class _FoodSearchScreenState extends State<FoodSearchScreen> {
                               color: Colors.amber,
                             ),
                             onTap: () {
-                              // TODO: 食品タップ時に登録ダイアログを開く処理（次回追加）
+                              _showAmountDialog(context, food);
                             },
                           ),
                         );
@@ -125,4 +125,81 @@ class _FoodSearchScreenState extends State<FoodSearchScreen> {
       ),
     );
   }
+}
+
+void _showAmountDialog(BuildContext context, FoodItem food) {
+  final TextEditingController amountController = TextEditingController(
+    text: '100',
+  ); // デフォルト100g
+
+  showDialog(
+    context: context,
+    builder: (dialogContext) {
+      return AlertDialog(
+        title: Text('${food.name} の記録'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Text('食べた量 (g) を入力してください'),
+            const SizedBox(height: 12),
+            TextField(
+              controller: amountController,
+              keyboardType: TextInputType.number,
+              decoration: const InputDecoration(
+                labelText: '分量 (g)',
+                suffixText: 'g',
+                border: OutlineInputBorder(),
+              ),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(dialogContext),
+            child: const Text('キャンセル'),
+          ),
+          ElevatedButton(
+            onPressed: () async {
+              final double amount =
+                  double.tryParse(amountController.text) ?? 100.0;
+              final double ratio = amount / 100.0; // 100gあたりの倍率計算
+
+              // 食べた量に応じたPFCを計算
+              final double p = food.protein * ratio;
+              final double f = food.fat * ratio;
+              final double c = food.carbo * ratio;
+
+              // Java APIにPOST送信
+              final url = Uri.parse(
+                'http://localhost:8080/api/v1/diet-status/add-food',
+              );
+              try {
+                final response = await http.post(
+                  url,
+                  headers: {'Content-Type': 'application/json'},
+                  body: json.encode({'protein': p, 'fat': f, 'carbo': c}),
+                );
+
+                if (response.statusCode == 200) {
+                  Navigator.pop(dialogContext); // ダイアログ閉じる
+                  Navigator.pop(context); // 検索画面閉じてホームへ戻る
+
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('${food.name} (${amount}g) を記録しました！'),
+                    ),
+                  );
+                }
+              } catch (e) {
+                ScaffoldMessenger.of(
+                  context,
+                ).showSnackBar(SnackBar(content: Text('登録エラー: $e')));
+              }
+            },
+            child: const Text('追加する'),
+          ),
+        ],
+      );
+    },
+  );
 }
