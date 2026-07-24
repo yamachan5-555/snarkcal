@@ -109,7 +109,15 @@ class DietNotifier extends Notifier<DietStatus> {
   }
 
   void updateStatus(DietStatus newStatus) {
-    state = newStatus;
+    state = DietStatus(
+      totalProtein: newStatus.totalProtein,
+      totalFat: newStatus.totalFat,
+      totalCarbo: newStatus.totalCarbo,
+      targetProtein: newStatus.targetProtein,
+      targetFat: newStatus.targetFat,
+      targetCarbo: newStatus.targetCarbo,
+      characterMessage: newStatus.characterMessage,
+    );
   }
 }
 
