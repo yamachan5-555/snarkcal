@@ -42,6 +42,7 @@ class _FoodSearchScreenState extends ConsumerState<FoodSearchScreen> {
         final List<dynamic> data = json.decode(utf8.decode(response.bodyBytes));
         setState(() {
           _searchResults = data.map((item) => FoodItem.fromJson(item)).toList();
+          _searchResults = data.map((json) => FoodItem.fromJson(json)).toList();
         });
       }
     } catch (e) {
