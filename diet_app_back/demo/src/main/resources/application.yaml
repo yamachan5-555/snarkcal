@@ -6,7 +6,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
-      ddl-auto: update # エンティティ（@Entity）から自動でテーブルを作成・更新
+      ddl-auto: create-drop
     show-sql: true     # 実行されるSQLをコンソールに出力
     defer-datasource-initialization: true # Hibernateのテーブル生成後にdata.sqlを実行する設定
   sql:
