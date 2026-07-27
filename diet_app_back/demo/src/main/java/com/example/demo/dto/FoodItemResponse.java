@@ -9,6 +9,5 @@ public record FoodItemResponse(
     int calories,
     double protein,
     double fat,
-    double carbo,
-    double salt
+    double carbo
 ) {}

@@ -109,7 +109,7 @@ class _FoodSearchScreenState extends ConsumerState<FoodSearchScreen> {
                               ),
                             ),
                             subtitle: Text(
-                              '${food.calories} kcal | P:${food.protein}g F:${food.fat}g C:${food.carbo}g 塩分:${food.salt}g',
+                              '${food.calories} kcal | P:${food.protein}g F:${food.fat}g C:${food.carbo}g',
                               style: const TextStyle(fontSize: 12),
                             ),
                             trailing: const Icon(
