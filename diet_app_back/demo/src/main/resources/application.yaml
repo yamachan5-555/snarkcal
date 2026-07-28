@@ -6,9 +6,17 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
-      ddl-auto: create-drop
-    show-sql: true     # 実行されるSQLをコンソールに出力
-    defer-datasource-initialization: true # Hibernateのテーブル生成後にdata.sqlを実行する設定
+      ddl-auto: none
+    show-sql: true
+    defer-datasource-initialization: true
   sql:
     init:
-      mode: always # 常にSQLスクリプトを実行
+      mode: always
+      schema-locations:
+        - classpath:sql/create_users.sql
+        - classpath:sql/create_foods.sql
+        - classpath:sql/create_snarky_messages.sql
+        - classpath:sql/create_food_records.sql
+      data-locations:
+        - classpath:sql/insert_foods.sql
+        - classpath:sql/insert_snarky_messages.sql
