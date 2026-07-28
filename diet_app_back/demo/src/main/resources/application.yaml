@@ -14,12 +14,15 @@ spring:
   sql:
     init:
       mode: always
-      continue-on-error: true
+      continue-on-error: false
       schema-locations:
-        - optional:classpath:sql/create_users.sql
-        - optional:classpath:sql/create_foods.sql
-        - optional:classpath:sql/create_snarky_messages.sql
-        - optional:classpath:sql/create_food_records.sql
+        - classpath:sql/create_diet_users.sql
+        - classpath:sql/create_foods.sql
+        - classpath:sql/create_snarky_messages.sql
+        - classpath:sql/create_food_records.sql
       data-locations:
-        - optional:classpath:sql/insert_foods.sql
-        - optional:classpath:sql/insert_snarky_messages.sql
+        - classpath:sql/insert_diet_users.sql
+        - classpath:sql/insert_foods.sql
+        - classpath:sql/insert_snarky_messages.sql
+
+        

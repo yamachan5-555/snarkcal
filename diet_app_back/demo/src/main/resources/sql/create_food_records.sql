@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS food_records (
     memo VARCHAR(255),
     record_date DATE NOT NULL,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    CONSTRAINT fk_food_records_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    CONSTRAINT fk_food_records_user FOREIGN KEY (user_id) REFERENCES diet_users(id) ON DELETE CASCADE,
     CONSTRAINT fk_food_records_food FOREIGN KEY (food_id) REFERENCES foods(id) ON DELETE SET NULL,
     INDEX idx_user_date (user_id, record_date)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
